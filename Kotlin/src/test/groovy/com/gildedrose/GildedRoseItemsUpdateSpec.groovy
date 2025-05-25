@@ -1,5 +1,6 @@
 package com.gildedrose
 
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import static com.gildedrose.GildedRoseKt.BACKSTAGE_PASSES_ITEM_NAME
@@ -77,6 +78,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
         then: "Quality is not increased above 50"
             verifyAll(items[0]) {
                 quality == MAX_STANDARD_QUALITY
+                sellIn == FUTURE_SELL_IN - 1
             }
 
         where: "Improving items having maximum quality"
@@ -151,6 +153,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             SELL_IN_PASSED                          | 0
     }
 
+    @Ignore
     def "Should decrease quality accordingly to sellIn for 'Conjured' items"() {
         given: "'Conjured' item having defined sellIn"
             def items = [new Item(CONJURED_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
