@@ -37,7 +37,6 @@ class GildedRoseItemsUpdateSpec extends Specification {
                 quality == POSITIVE_QUALITY - expectedQualityDecrease
                 sellIn == initialSellIn - 1
             }
-            println(items[0])
 
         where:
             initialSellIn  | expectedQualityDecrease
@@ -106,8 +105,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             initialSellIn << [FUTURE_SELL_IN, SELL_IN_TODAY, SELL_IN_PASSED]
     }
 
-    //BRIE:
-    def "Should increase quality for 'Aged Brie' accordingly to sellIn"() {
+    def "Should increase quality accordingly to sellIn for 'Aged Brie'"() {
         given: "'Aged Brie' item having defined sellIn"
             def items = [new Item(BRIE_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
         and: "App is configured with items"
@@ -129,8 +127,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             SELL_IN_PASSED | 2
     }
 
-    //PASSES:
-    def "Should increase quality for 'Backstage Passes' accordingly to sellIn thresholds"() {
+    def "Should modify quality accordingly to sellIn thresholds for 'Backstage Passes'"() {
         given: "'Backstage Passes' item having defined sellIn"
             def items = [new Item(BACKSTAGE_PASSES_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
         and: "App is configured with items"
@@ -152,6 +149,28 @@ class GildedRoseItemsUpdateSpec extends Specification {
             BACKSTAGE_PASS_SELL_IN_THRESHOLD_2      | POSITIVE_QUALITY + 3
             SELL_IN_TODAY                           | 0
             SELL_IN_PASSED                          | 0
+    }
+
+    def "Should decrease quality accordingly to sellIn for 'Conjured' items"() {
+        given: "'Conjured' item having defined sellIn"
+            def items = [new Item(CONJURED_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
+        and: "App is configured with items"
+            def app = new GildedRose(items)
+
+        when: "Quality is updated"
+            app.updateQuality()
+
+        then: "Item has quality decreased as expected"
+            verifyAll(items[0]) {
+                quality == POSITIVE_QUALITY - expectedQualityDecrease
+                sellIn == initialSellIn - 1
+            }
+
+        where:
+            initialSellIn  | expectedQualityDecrease
+            FUTURE_SELL_IN | 2
+            SELL_IN_TODAY  | 4
+            SELL_IN_PASSED | 4
     }
 
 }
