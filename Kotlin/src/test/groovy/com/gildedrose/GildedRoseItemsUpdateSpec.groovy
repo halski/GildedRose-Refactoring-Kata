@@ -31,7 +31,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             def app = new GildedRose(items)
 
         when: "Quality is updated"
-            app.updateQuality()
+            app.updateItems()
 
         then: "Item has quality decreased as expected"
             verifyAll(items[0]) {
@@ -52,7 +52,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             def app = new GildedRose(items)
 
         when: "Quality is updated"
-            app.updateQuality()
+            app.updateItems()
 
         then: "Quality is not decreased below 0"
             verifyAll(items[0]) {
@@ -73,7 +73,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             def app = new GildedRose(items)
 
         when: "Quality is updated"
-            app.updateQuality()
+            app.updateItems()
 
         then: "Quality is not increased above 50"
             verifyAll(items[0]) {
@@ -95,7 +95,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             def app = new GildedRose(items)
 
         when: "Quality is updated"
-            app.updateQuality()
+            app.updateItems()
 
         then: "Item has quality and sellIn unchanged"
             verifyAll(items[0]) {
@@ -114,7 +114,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             def app = new GildedRose(items)
 
         when: "Quality is updated"
-            app.updateQuality()
+            app.updateItems()
 
         then: "Item has quality increased as expected"
             verifyAll(items[0]) {
@@ -136,7 +136,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             def app = new GildedRose(items)
 
         when: "Quality is updated"
-            app.updateQuality()
+            app.updateItems()
 
         then: "Item has quality increased as expected"
             verifyAll(items[0]) {
@@ -161,7 +161,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
             def app = new GildedRose(items)
 
         when: "Quality is updated"
-            app.updateQuality()
+            app.updateItems()
 
         then: "Item has quality decreased as expected"
             verifyAll(items[0]) {

@@ -7,7 +7,7 @@ const val CONJURED_ITEM_NAME = "Conjured Mana Cake"
 
 class GildedRose(private val items: List<Item>) {
 
-    fun updateQuality() {
+    fun updateItems() {
         for (item in items) {
             item.update()
         }
@@ -16,56 +16,31 @@ class GildedRose(private val items: List<Item>) {
 
 fun Item.update() {
 
-    if (name != BRIE_ITEM_NAME && name != BACKSTAGE_PASSES_ITEM_NAME) {
-        // Normal items, Sulfuras and Conjured items
-        if (quality > 0) {
-            if (name != SULFURAS_ITEM_NAME) {
-                standardQualityDecrease()
+    when (name) {
+        BRIE_ITEM_NAME -> if (quality < 50) standardQualityIncrease()
+        BACKSTAGE_PASSES_ITEM_NAME -> {
+            if (quality < 50) {
+                standardQualityIncrease()
+                if (sellIn < 11) standardQualityIncrease()
+                if (sellIn < 6) standardQualityIncrease()
             }
         }
-    } else {
-        // Aged Brie or Backstage passes
-        if (quality < 50) {
-            standardQualityIncrease()
-
-            if (name == BACKSTAGE_PASSES_ITEM_NAME) {
-                if (sellIn < 11) {
-                    standardQualityIncrease()
-                }
-
-                if (sellIn < 6) {
-                    standardQualityIncrease()
-                }
-            }
-        }
+        SULFURAS_ITEM_NAME -> {}
+        else -> if (quality > 0) standardQualityDecrease()
     }
 
-    // Handle sellIn date for items
-    if (name != SULFURAS_ITEM_NAME) {
-        advanceByADay()
+    when (name) {
+        SULFURAS_ITEM_NAME -> {}
+        else -> advanceByADay()
     }
 
     if (sellIn < 0) {
-
-        if (name != BRIE_ITEM_NAME) {
-            if (name != BACKSTAGE_PASSES_ITEM_NAME) {
-                // Normal items and Conjured items
-                if (quality > 0) {
-                    if (name != SULFURAS_ITEM_NAME) {
-                        standardQualityDecrease()
-                    }
-                }
-            } else {
-                // Backstage passes
-                quality = 0
-            }
-        } else {
-            // Aged Brie
-            if (quality < 50) {
-                standardQualityIncrease()
-            }
+        when (name) {
+            BRIE_ITEM_NAME -> if (quality < 50) standardQualityIncrease()
+            BACKSTAGE_PASSES_ITEM_NAME -> quality = 0
+            SULFURAS_ITEM_NAME -> {}
+            else -> if (quality > 0) standardQualityDecrease()
         }
-
     }
 }
 
