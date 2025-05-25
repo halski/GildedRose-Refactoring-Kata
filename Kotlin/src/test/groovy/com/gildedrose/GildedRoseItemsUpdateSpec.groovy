@@ -24,9 +24,9 @@ class GildedRoseItemsUpdateSpec extends Specification {
 
 
     def "Should decrease quality accordingly to sellIn for standard items"() {
-        given: "Standard item to sell having defined sellIn"
+        given: "Standard item having defined sellIn"
             def items = [new Item(STANDARD_ITEM, initialSellIn, POSITIVE_QUALITY)]
-        and: "App is configured with standard item"
+        and: "App is configured with items"
             def app = new GildedRose(items)
 
         when: "Quality is updated"
@@ -87,10 +87,10 @@ class GildedRoseItemsUpdateSpec extends Specification {
             ]
     }
 
-    //SULFURAS:
     def "Should not alter quality or sellIn for 'Sulfuras'"() {
-        given: "App configured with 'Sulfuras'"
+        given: "'Sulfuras' item having defined sellIn"
             def items = [new Item(SULFURAS_ITEM_NAME, initialSellIn, 80)]
+        and: "App is configured with items"
             def app = new GildedRose(items)
 
         when: "Quality is updated"
@@ -108,8 +108,9 @@ class GildedRoseItemsUpdateSpec extends Specification {
 
     //BRIE:
     def "Should increase quality for 'Aged Brie' accordingly to sellIn"() {
-        given: "App configured with 'Aged Brie' having defined sellIn"
+        given: "'Aged Brie' item having defined sellIn"
             def items = [new Item(BRIE_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
+        and: "App is configured with items"
             def app = new GildedRose(items)
 
         when: "Quality is updated"
@@ -130,8 +131,9 @@ class GildedRoseItemsUpdateSpec extends Specification {
 
     //PASSES:
     def "Should increase quality for 'Backstage Passes' accordingly to sellIn thresholds"() {
-        given: "App configured with 'Backstage Passes' having defined sellIn"
+        given: "'Backstage Passes' item having defined sellIn"
             def items = [new Item(BACKSTAGE_PASSES_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
+        and: "App is configured with items"
             def app = new GildedRose(items)
 
         when: "Quality is updated"
