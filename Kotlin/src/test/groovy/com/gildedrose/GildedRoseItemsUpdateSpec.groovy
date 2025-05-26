@@ -130,8 +130,8 @@ class GildedRoseItemsUpdateSpec extends Specification {
     }
 
     def "Should modify quality accordingly to sellIn thresholds for 'Backstage Passes'"() {
-        given: "'Backstage Passes' item having defined sellIn"
-            def items = [new Item(BACKSTAGE_PASSES_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
+        given: "'Backstage Passes' item having defined sellIn and quality"
+            def items = [new Item(BACKSTAGE_PASSES_ITEM_NAME, initialSellIn, initialQuality)]
         and: "App is configured with items"
             def app = new GildedRose(items)
 
@@ -145,12 +145,13 @@ class GildedRoseItemsUpdateSpec extends Specification {
             }
 
         where:
-            initialSellIn                           | expectedQuality
-            BACKSTAGE_PASS_SELL_IN_ABOVE_THRESHOLDS | POSITIVE_QUALITY + 1
-            BACKSTAGE_PASS_SELL_IN_THRESHOLD_1      | POSITIVE_QUALITY + 2
-            BACKSTAGE_PASS_SELL_IN_THRESHOLD_2      | POSITIVE_QUALITY + 3
-            SELL_IN_TODAY                           | 0
-            SELL_IN_PASSED                          | 0
+            initialSellIn                           | initialQuality   | expectedQuality
+            BACKSTAGE_PASS_SELL_IN_ABOVE_THRESHOLDS | POSITIVE_QUALITY | POSITIVE_QUALITY + 1
+            BACKSTAGE_PASS_SELL_IN_THRESHOLD_1      | POSITIVE_QUALITY | POSITIVE_QUALITY + 2
+            BACKSTAGE_PASS_SELL_IN_THRESHOLD_2      | POSITIVE_QUALITY | POSITIVE_QUALITY + 3
+            SELL_IN_TODAY                           | POSITIVE_QUALITY | 0
+            SELL_IN_PASSED                          | POSITIVE_QUALITY | 0
+            BACKSTAGE_PASS_SELL_IN_THRESHOLD_2      | 49               | MAX_STANDARD_QUALITY
     }
 
     @Ignore
