@@ -1,6 +1,6 @@
 package com.gildedrose
 
-import spock.lang.Ignore
+
 import spock.lang.Specification
 
 import static com.gildedrose.GildedRoseKt.BACKSTAGE_PASSES_ITEM_NAME
@@ -78,13 +78,14 @@ class GildedRoseItemsUpdateSpec extends Specification {
         then: "Quality is not increased above 50"
             verifyAll(items[0]) {
                 quality == MAX_STANDARD_QUALITY
-                sellIn == FUTURE_SELL_IN - 1
             }
 
-        where: "Improving items having maximum quality"
+        where: "Improving items having the coming quality update exceed maximum"
             items << [
                     [new Item(BRIE_ITEM_NAME, FUTURE_SELL_IN, MAX_STANDARD_QUALITY)],
+                    [new Item(BRIE_ITEM_NAME, SELL_IN_PASSED, 49)],
                     [new Item(BACKSTAGE_PASSES_ITEM_NAME, FUTURE_SELL_IN, MAX_STANDARD_QUALITY)],
+                    [new Item(BACKSTAGE_PASSES_ITEM_NAME, BACKSTAGE_PASS_SELL_IN_THRESHOLD_2, 49)],
             ]
     }
 
@@ -131,7 +132,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
 
     def "Should modify quality accordingly to sellIn thresholds for 'Backstage Passes'"() {
         given: "'Backstage Passes' item having defined sellIn and quality"
-            def items = [new Item(BACKSTAGE_PASSES_ITEM_NAME, initialSellIn, initialQuality)]
+            def items = [new Item(BACKSTAGE_PASSES_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
         and: "App is configured with items"
             def app = new GildedRose(items)
 
@@ -145,13 +146,12 @@ class GildedRoseItemsUpdateSpec extends Specification {
             }
 
         where:
-            initialSellIn                           | initialQuality   | expectedQuality
-            BACKSTAGE_PASS_SELL_IN_ABOVE_THRESHOLDS | POSITIVE_QUALITY | POSITIVE_QUALITY + 1
-            BACKSTAGE_PASS_SELL_IN_THRESHOLD_1      | POSITIVE_QUALITY | POSITIVE_QUALITY + 2
-            BACKSTAGE_PASS_SELL_IN_THRESHOLD_2      | POSITIVE_QUALITY | POSITIVE_QUALITY + 3
-            SELL_IN_TODAY                           | POSITIVE_QUALITY | 0
-            SELL_IN_PASSED                          | POSITIVE_QUALITY | 0
-            BACKSTAGE_PASS_SELL_IN_THRESHOLD_2      | 49               | MAX_STANDARD_QUALITY
+            initialSellIn                           | expectedQuality
+            BACKSTAGE_PASS_SELL_IN_ABOVE_THRESHOLDS | POSITIVE_QUALITY + 1
+            BACKSTAGE_PASS_SELL_IN_THRESHOLD_1      | POSITIVE_QUALITY + 2
+            BACKSTAGE_PASS_SELL_IN_THRESHOLD_2      | POSITIVE_QUALITY + 3
+            SELL_IN_TODAY                           | 0
+            SELL_IN_PASSED                          | 0
     }
 
     def "Should decrease quality accordingly to sellIn for 'Conjured' items"() {
