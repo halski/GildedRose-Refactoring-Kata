@@ -59,17 +59,16 @@ private fun Item.updateQuality() {
 }
 
 private const val MAX_QUALITY = 50
+private const val MIN_QUALITY = 0
 
 private fun Item.isExpired() = sellIn < 0
 
 private fun Item.decreaseQuality(decreaseBy: Int = 1) {
-    if (quality - decreaseBy < 0) quality = 0
-    else quality -= decreaseBy
+    quality = maxOf(MIN_QUALITY, quality - decreaseBy)
 }
 
 private fun Item.increaseQuality(increaseBy: Int = 1) {
-    if (quality + increaseBy > MAX_QUALITY) quality = MAX_QUALITY
-    else quality += increaseBy
+    quality = minOf(MAX_QUALITY, quality + increaseBy)
 }
 
 private fun Item.advanceByADay() {
