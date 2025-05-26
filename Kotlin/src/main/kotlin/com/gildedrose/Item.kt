@@ -34,22 +34,24 @@ private fun Item.updateQuality() {
     }
 }
 
-private fun Item.qualityImprovingUpdate() {
-    val increaseBy = if (isExpired()) 2 else 1
-    increaseQuality(increaseBy)
-}
-
 private fun Item.backstagePassQualityUpdate() {
     if (isExpired()) {
         decreaseQualityToZero()
     } else {
-        val increaseBy = when {
-            sellIn < 5 -> 3
-            sellIn < 10 -> 2
-            else -> 1
-        }
-        increaseQuality(increaseBy)
+        increaseQuality(determineBackstagePassIncrease())
     }
+}
+
+private fun Item.determineBackstagePassIncrease(): Int =
+    when {
+        sellIn < 5 -> 3
+        sellIn < 10 -> 2
+        else -> 1
+    }
+
+private fun Item.qualityImprovingUpdate() {
+    val increaseBy = if (isExpired()) 2 else 1
+    increaseQuality(increaseBy)
 }
 
 private fun Item.qualityDegradingUpdate(decrease: Int = 1) {
