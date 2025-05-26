@@ -1,6 +1,9 @@
+import org.gradle.api.JavaVersion.VERSION_21
+
 plugins {
 	kotlin("jvm") version "2.1.20"
 	application
+	groovy
 }
 
 group = "com.gildedrose"
@@ -11,19 +14,31 @@ repositories {
 }
 
 java {
+	sourceCompatibility = VERSION_21
+	targetCompatibility = VERSION_21
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(8)
+		languageVersion.set(JavaLanguageVersion.of(21))
 	}
 }
 
+
 dependencies {
 	implementation(kotlin("stdlib"))
-	testImplementation(kotlin("test"))
-	testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
+
+	testImplementation("org.spockframework:spock-core:2.4-M6-groovy-4.0")
+	testImplementation("org.apache.groovy:groovy:4.0.26")
+
 }
 
 tasks.test {
 	useJUnitPlatform()
+	testLogging {
+		events("passed", "skipped", "failed")
+		showStandardStreams = true
+	}
+	javaLauncher.set(javaToolchains.launcherFor {
+		languageVersion.set(JavaLanguageVersion.of(21))
+	})
 }
 
 tasks.register<JavaExec>("texttest") {
