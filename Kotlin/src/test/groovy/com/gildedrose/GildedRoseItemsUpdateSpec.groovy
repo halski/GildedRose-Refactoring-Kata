@@ -1,9 +1,12 @@
 package com.gildedrose
 
-import com.gildedrose.updater.ItemTypes
+
 import spock.lang.Specification
 
-import static com.gildedrose.updater.ItemTypes.*
+import static com.gildedrose.updater.ItemTypes.AGED_BRIE
+import static com.gildedrose.updater.ItemTypes.BACKSTAGE_PASSES
+import static com.gildedrose.updater.ItemTypes.CONJURED
+import static com.gildedrose.updater.ItemTypes.SULFURAS
 
 class GildedRoseItemsUpdateSpec extends Specification {
 

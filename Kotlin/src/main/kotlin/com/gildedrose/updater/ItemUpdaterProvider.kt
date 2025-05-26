@@ -25,6 +25,6 @@ object ItemUpdaterProvider {
         )
     }
 
-    fun updaterFor(item: Item): ItemUpdater =
+    fun findUpdaterFor(item: Item): ItemUpdater =
         itemTypeToUpdater[item.name] ?: QualityDegradingUpdater()
 }
