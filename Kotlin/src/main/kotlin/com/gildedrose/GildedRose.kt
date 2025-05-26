@@ -6,75 +6,7 @@ const val BRIE_ITEM_NAME = "Aged Brie"
 const val CONJURED_ITEM_NAME = "Conjured Mana Cake"
 
 class GildedRose(private val items: List<Item>) {
-
     fun updateItems() {
         items.forEach { it.update() }
     }
-}
-
-fun Item.update() {
-    updateSellIn()
-    updateQuality()
-}
-
-private fun Item.updateSellIn() {
-    when (name) {
-        SULFURAS_ITEM_NAME -> {}
-        else -> advanceByADay()
-    }
-}
-
-private fun Item.updateQuality() {
-    when (name) {
-        BRIE_ITEM_NAME -> {
-            val increaseBy = if (isExpired()) 2 else 1
-            increaseQuality(increaseBy)
-        }
-
-        BACKSTAGE_PASSES_ITEM_NAME -> {
-            if (isExpired()) {
-                decreaseQualityToZero()
-            } else {
-                val increaseBy = when {
-                    sellIn < 5 -> 3
-                    sellIn < 10 -> 2
-                    else -> 1
-                }
-                increaseQuality(increaseBy)
-            }
-        }
-
-        SULFURAS_ITEM_NAME -> {}
-
-        CONJURED_ITEM_NAME -> {
-            val decreaseBy = if (isExpired()) 4 else 2
-            decreaseQuality(decreaseBy)
-        }
-
-        else -> {
-            val decreaseBy = if (isExpired()) 2 else 1
-            decreaseQuality(decreaseBy)
-        }
-    }
-}
-
-private const val MAX_QUALITY = 50
-private const val MIN_QUALITY = 0
-
-private fun Item.isExpired() = sellIn < 0
-
-private fun Item.decreaseQuality(decreaseBy: Int = 1) {
-    quality = maxOf(MIN_QUALITY, quality - decreaseBy)
-}
-
-private fun Item.increaseQuality(increaseBy: Int = 1) {
-    quality = minOf(MAX_QUALITY, quality + increaseBy)
-}
-
-private fun Item.advanceByADay() {
-    sellIn -= 1
-}
-
-private fun Item.decreaseQualityToZero() {
-    quality = 0
 }
