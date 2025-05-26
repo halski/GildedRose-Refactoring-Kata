@@ -1,6 +1,8 @@
-package com.gildedrose
+package com.gildedrose.updater
 
-interface ItemUpdater {
+import com.gildedrose.Item
+
+fun interface ItemUpdater {
 
     fun update(item: Item)
 }
@@ -10,10 +12,6 @@ abstract class BaseItemUpdater : ItemUpdater {
 
         const val MIN_QUALITY = 0
         const val MAX_QUALITY = 50
-//        const val SULFURAS_ITEM_NAME = "Sulfuras, Hand of Ragnaros"
-//        const val BRIE_ITEM_NAME = "Aged Brie"
-//        const val BACKSTAGE_PASSES_ITEM_NAME = "Backstage passes to a TAFKAL80ETC concert"
-//        const val CONJURED_ITEM_NAME = "Conjured Mana Cake"
     }
 
     protected fun Item.isExpired() = sellIn < 0
@@ -54,6 +52,11 @@ class QualityDegradingUpdater(private val decreaseBy: Int = 1) : BaseItemUpdater
 object BackstagePassQualityUpdater : BaseItemUpdater() {
 
     override fun update(item: Item) {
+        item.advanceByADay()
+        updateQuality(item)
+    }
+
+    private fun updateQuality(item: Item) {
         if (item.isExpired()) {
             item.decreaseQualityToZero()
         } else {
@@ -69,8 +72,4 @@ object BackstagePassQualityUpdater : BaseItemUpdater() {
         }
 }
 
-object NoOpUpdater : ItemUpdater {
-    override fun update(item: Item) {
-        //NO UPDATE
-    }
-}
+val NoOpUpdater: ItemUpdater = ItemUpdater { }
