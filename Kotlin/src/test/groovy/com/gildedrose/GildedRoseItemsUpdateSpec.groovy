@@ -154,7 +154,6 @@ class GildedRoseItemsUpdateSpec extends Specification {
             BACKSTAGE_PASS_SELL_IN_THRESHOLD_2      | 49               | MAX_STANDARD_QUALITY
     }
 
-    @Ignore
     def "Should decrease quality accordingly to sellIn for 'Conjured' items"() {
         given: "'Conjured' item having defined sellIn"
             def items = [new Item(CONJURED_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]

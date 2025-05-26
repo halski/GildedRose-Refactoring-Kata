@@ -46,6 +46,11 @@ private fun Item.updateQuality() {
 
         SULFURAS_ITEM_NAME -> {}
 
+        CONJURED_ITEM_NAME -> {
+            val decreaseBy = if (isExpired()) 4 else 2
+            decreaseQuality(decreaseBy)
+        }
+
         else -> {
             val decreaseBy = if (isExpired()) 2 else 1
             decreaseQuality(decreaseBy)
