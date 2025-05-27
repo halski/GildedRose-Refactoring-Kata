@@ -21,10 +21,10 @@ object ItemUpdaterProvider {
             AGED_BRIE to QualityImprovingUpdater,
             SULFURAS to NoOpUpdater,
             BACKSTAGE_PASSES to BackstagePassQualityUpdater,
-            CONJURED to QualityDegradingUpdater(2)
+            CONJURED to QualityDegradingByTwoUpdater
         )
     }
 
     fun findUpdaterFor(item: Item): ItemUpdater =
-        itemTypeToUpdater[item.name] ?: QualityDegradingUpdater()
+        itemTypeToUpdater[item.name] ?: QualityDegradingByOneUpdater
 }

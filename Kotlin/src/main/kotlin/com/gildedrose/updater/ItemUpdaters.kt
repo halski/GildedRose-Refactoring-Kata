@@ -2,9 +2,15 @@ package com.gildedrose.updater
 
 import com.gildedrose.Item
 
-fun interface ItemUpdater {
+interface ItemUpdater {
 
-    fun update(item: Item)
+    fun update(item: Item) {
+        updateExpiry(item)
+        updateQuality(item)
+    }
+
+    fun updateExpiry(item: Item)
+    fun updateQuality(item: Item)
 }
 
 abstract class BaseItemUpdater : ItemUpdater {
@@ -12,6 +18,10 @@ abstract class BaseItemUpdater : ItemUpdater {
 
         const val MIN_QUALITY = 0
         const val MAX_QUALITY = 50
+    }
+
+    override fun updateExpiry(item: Item) {
+        item.advanceByADay()
     }
 
     protected fun Item.isExpired() = sellIn < 0
@@ -35,28 +45,24 @@ abstract class BaseItemUpdater : ItemUpdater {
 
 object QualityImprovingUpdater : BaseItemUpdater() {
 
-    override fun update(item: Item) {
-        item.advanceByADay()
+    override fun updateQuality(item: Item) {
         item.increaseQuality(if (item.isExpired()) 2 else 1)
     }
 }
 
-class QualityDegradingUpdater(private val decreaseBy: Int = 1) : BaseItemUpdater() {
+open class QualityDegradingUpdater(private val decreaseBy: Int = 1) : BaseItemUpdater() {
 
-    override fun update(item: Item) {
-        item.advanceByADay()
+    override fun updateQuality(item: Item) {
         item.decreaseQuality(if (item.isExpired()) 2 * this.decreaseBy else this.decreaseBy)
     }
 }
 
+object QualityDegradingByOneUpdater:  QualityDegradingUpdater(1)
+object QualityDegradingByTwoUpdater:  QualityDegradingUpdater(2)
+
 object BackstagePassQualityUpdater : BaseItemUpdater() {
 
-    override fun update(item: Item) {
-        item.advanceByADay()
-        updateQuality(item)
-    }
-
-    private fun updateQuality(item: Item) {
+    override fun updateQuality(item: Item) {
         if (item.isExpired()) {
             item.decreaseQualityToZero()
         } else {
@@ -72,4 +78,13 @@ object BackstagePassQualityUpdater : BaseItemUpdater() {
         }
 }
 
-val NoOpUpdater: ItemUpdater = ItemUpdater { }
+object NoOpUpdater : ItemUpdater {
+
+    override fun updateQuality(item: Item) {
+        //NO OP
+    }
+
+    override fun updateExpiry(item: Item) {
+        //NO OP
+    }
+}
