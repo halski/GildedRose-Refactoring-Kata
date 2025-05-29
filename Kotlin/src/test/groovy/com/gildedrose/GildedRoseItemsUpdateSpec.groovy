@@ -3,10 +3,10 @@ package com.gildedrose
 
 import spock.lang.Specification
 
-import static com.gildedrose.GildedRoseKt.BACKSTAGE_PASSES_ITEM_NAME
-import static com.gildedrose.GildedRoseKt.BRIE_ITEM_NAME
-import static com.gildedrose.GildedRoseKt.CONJURED_ITEM_NAME
-import static com.gildedrose.GildedRoseKt.SULFURAS_ITEM_NAME
+import static com.gildedrose.updater.ItemTypes.AGED_BRIE
+import static com.gildedrose.updater.ItemTypes.BACKSTAGE_PASSES
+import static com.gildedrose.updater.ItemTypes.CONJURED
+import static com.gildedrose.updater.ItemTypes.SULFURAS
 
 class GildedRoseItemsUpdateSpec extends Specification {
 
@@ -63,8 +63,8 @@ class GildedRoseItemsUpdateSpec extends Specification {
         where: "Degrading items having 0 quality"
             items << [
                     [new Item(STANDARD_ITEM, SELL_IN_TODAY, 0)],
-                    [new Item(BACKSTAGE_PASSES_ITEM_NAME, SELL_IN_TODAY, 0)],
-                    [new Item(CONJURED_ITEM_NAME, SELL_IN_TODAY, 0)]
+                    [new Item(BACKSTAGE_PASSES, SELL_IN_TODAY, 0)],
+                    [new Item(CONJURED, SELL_IN_TODAY, 0)]
             ]
     }
 
@@ -82,16 +82,16 @@ class GildedRoseItemsUpdateSpec extends Specification {
 
         where: "Improving items having the coming quality update exceed maximum"
             items << [
-                    [new Item(BRIE_ITEM_NAME, FUTURE_SELL_IN, MAX_STANDARD_QUALITY)],
-                    [new Item(BRIE_ITEM_NAME, SELL_IN_PASSED, 49)],
-                    [new Item(BACKSTAGE_PASSES_ITEM_NAME, FUTURE_SELL_IN, MAX_STANDARD_QUALITY)],
-                    [new Item(BACKSTAGE_PASSES_ITEM_NAME, BACKSTAGE_PASS_SELL_IN_THRESHOLD_2, 49)],
+                    [new Item(AGED_BRIE, FUTURE_SELL_IN, MAX_STANDARD_QUALITY)],
+                    [new Item(AGED_BRIE, SELL_IN_PASSED, 49)],
+                    [new Item(BACKSTAGE_PASSES, FUTURE_SELL_IN, MAX_STANDARD_QUALITY)],
+                    [new Item(BACKSTAGE_PASSES, BACKSTAGE_PASS_SELL_IN_THRESHOLD_2, 49)],
             ]
     }
 
     def "Should not alter quality or sellIn for 'Sulfuras'"() {
         given: "'Sulfuras' item having defined sellIn"
-            def items = [new Item(SULFURAS_ITEM_NAME, initialSellIn, 80)]
+            def items = [new Item(SULFURAS, initialSellIn, 80)]
         and: "App is configured with items"
             def app = new GildedRose(items)
 
@@ -110,7 +110,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
 
     def "Should increase quality accordingly to sellIn for 'Aged Brie'"() {
         given: "'Aged Brie' item having defined sellIn"
-            def items = [new Item(BRIE_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
+            def items = [new Item(AGED_BRIE, initialSellIn, POSITIVE_QUALITY)]
         and: "App is configured with items"
             def app = new GildedRose(items)
 
@@ -132,7 +132,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
 
     def "Should modify quality accordingly to sellIn thresholds for 'Backstage Passes'"() {
         given: "'Backstage Passes' item having defined sellIn and quality"
-            def items = [new Item(BACKSTAGE_PASSES_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
+            def items = [new Item(BACKSTAGE_PASSES, initialSellIn, POSITIVE_QUALITY)]
         and: "App is configured with items"
             def app = new GildedRose(items)
 
@@ -156,7 +156,7 @@ class GildedRoseItemsUpdateSpec extends Specification {
 
     def "Should decrease quality accordingly to sellIn for 'Conjured' items"() {
         given: "'Conjured' item having defined sellIn"
-            def items = [new Item(CONJURED_ITEM_NAME, initialSellIn, POSITIVE_QUALITY)]
+            def items = [new Item(CONJURED, initialSellIn, POSITIVE_QUALITY)]
         and: "App is configured with items"
             def app = new GildedRose(items)
 
